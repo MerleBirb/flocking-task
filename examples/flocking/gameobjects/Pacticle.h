@@ -15,15 +15,15 @@ private:
 
     Vector2 acceleration;
     Vector2 previousAcceleration; //to draw Acc
+    Vector2 velocity;
     Polygon polygon;
+    Vector3 color; // todo: make this private
 
     //Methods
     void resetAcceleration();
 
 public:
-    Vector2 velocity; // todo: make this private
     bool drawAcceleration = false;
-    Vector3 color; // todo: make this private
 
     //Constructor
     explicit Particle(Engine *pEngine, float size = 4.f, Vector3 color = Vector3::RandomColor(31,255));
