@@ -5,6 +5,7 @@
 Vector2 SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
     //Try to avoid boids too close
     Vector2 separatingForce = Vector2::zero();
+    Vector2 normalizedSeparatingForce = Vector2::zero();
 
     float desiredDistance = desiredMinimalDistance;
 
@@ -34,11 +35,19 @@ Vector2 SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Boi
                 distance = 0.01f;
             }
 
-            separatingForce = (direction / (-distance));
+            separatingForce = (-direction / (distance * distance)) * weight;
         }
     }
 
-    separatingForce = Vector2::normalized(separatingForce);
+    normalizedSeparatingForce = Vector2::normalized(separatingForce);
+
+    if (separatingForce.getMagnitude() > normalizedSeparatingForce.getMagnitude())
+    {
+        Vector2 dif = separatingForce - normalizedSeparatingForce;
+        float difMagnitude = log(dif.getMagnitude());
+
+        separatingForce = normalizedSeparatingForce * (1 + difMagnitude);
+    }
 
     return separatingForce;
 }
